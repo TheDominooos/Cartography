@@ -62,11 +62,14 @@ public class TFCContent {
 
     public static ResourceLocation getTexturePath(Profile profile) {
         return switch(profile.type) {
-            case ORE, STONE -> new ResourceLocation("tfc", "textures/block/rock/raw/" + profile.name + ".png");
-            case GRAVEL -> new ResourceLocation("tfc", "textures/block/rock/gravel/" + profile.name + ".png");
-            case DIRT -> new ResourceLocation("tfc", "textures/block/dirt/" + profile.name + ".png");
-            case CLAY -> new ResourceLocation("tfc", "textures/block/clay/" + profile.name + ".png");
-            case SAND -> new ResourceLocation("tfc", "textures/block/sand/" + profile.name + ".png");
+            case ORE, STONE -> new ResourceLocation(profile.namespace, "textures/block/rock/raw/" + profile.name + ".png");
+            case GRAVEL -> new ResourceLocation(profile.namespace, "textures/block/rock/gravel/" + profile.name + ".png");
+            case DIRT -> new ResourceLocation(profile.namespace, "textures/block/dirt/" + profile.name + ".png");
+            case ROOTED_DIRT -> new ResourceLocation(profile.namespace, "textures/block/rooted_dirt/" + profile.name + ".png");
+            case PEAT -> new ResourceLocation(profile.namespace, "textures/block/peat.png");
+            case MUD -> new ResourceLocation(profile.namespace, "textures/block/mud/" + profile.name + ".png");
+            case CLAY -> new ResourceLocation(profile.namespace, "textures/block/clay/" + profile.name + ".png");
+            case SAND -> new ResourceLocation(profile.namespace, "textures/block/sand/" + profile.name + ".png");
             case SAPLING -> new ResourceLocation("tfc", "textures/block/wood/sapling/" + profile.name + ".png");
             default -> null;
         };
@@ -155,6 +158,9 @@ public class TFCContent {
         ORE(Classification.ROCK),
         GRAVEL(Classification.ROCK),
         DIRT(Classification.SOIL),
+        ROOTED_DIRT(Classification.SOIL),
+        PEAT(Classification.SOIL),
+        MUD(Classification.SOIL),
         CLAY(Classification.SOIL),
         SAND(Classification.SOIL),
         LOG(Classification.TREE),
