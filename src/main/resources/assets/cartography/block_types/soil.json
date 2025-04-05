@@ -1,0 +1,15 @@
+[
+  {"type": "PEAT" ,"namespace": "tfc", "name":  "peat"},
+  {"type": "PEAT" ,"namespace": "tfc", "name":  "peat_grass"},
+  {"type": "DIRT" ,"namespace": "tfc", "name":  "silty_loam"},
+  {"type": "DIRT" ,"namespace": "tfc", "name":  "silt"},
+  {"type": "DIRT" ,"namespace": "tfc", "name":  "loam"},
+  {"type": "DIRT" ,"namespace": "tfc", "name":  "sandy_loam"},
+  {"type": "SAND" ,"namespace": "tfc", "name":  "brown"},
+  {"type": "SAND" ,"namespace": "tfc", "name":  "white"},
+  {"type": "SAND" ,"namespace": "tfc", "name":  "black"},
+  {"type": "SAND" ,"namespace": "tfc", "name":  "red"},
+  {"type": "SAND" ,"namespace": "tfc", "name":  "yellow"},
+  {"type": "SAND" ,"namespace": "tfc", "name":  "green"},
+  {"type": "SAND" ,"namespace": "tfc", "name":  "pink"}
+]

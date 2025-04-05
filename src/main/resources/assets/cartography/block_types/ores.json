@@ -1,0 +1,23 @@
+[
+  {"namespace": "tfc", "name":  "native_copper", "block_loc": "ore/small_native_copper", "metal":  "copper"},
+  {"namespace": "tfc", "name":  "native_gold", "block_loc": "ore/small_native_gold", "metal":  "gold"},
+  {"namespace": "tfc", "name":  "native_silver", "block_loc": "ore/small_native_silver", "metal":  "silver"},
+  {"namespace": "tfc", "name":  "hematite", "block_loc": "ore/small_hematite", "metal":  "iron"},
+  {"namespace": "tfc", "name":  "cassiterite", "block_loc": "ore/small_cassiterite", "metal":  "tin"},
+  {"namespace": "tfc", "name":  "bismuthinite", "block_loc": "ore/small_bismuthinite", "metal":  "bismuth"},
+  {"namespace": "tfc", "name":  "garnierite", "block_loc": "ore/small_garnierite", "metal":  "nickel"},
+  {"namespace": "tfc", "name":  "malachite", "block_loc": "ore/small_malachite", "metal":  "copper"},
+  {"namespace": "tfc", "name":  "magnetite", "block_loc": "ore/small_magnetite", "metal":  "iron"},
+  {"namespace": "tfc", "name":  "limonite", "block_loc": "ore/small_limonite", "metal":  "iron"},
+  {"namespace": "tfc", "name":  "sphalerite", "block_loc": "ore/small_sphalerite", "metal":  "zinc"},
+  {"namespace": "tfc", "name":  "tetrahedrite", "block_loc": "ore/small_tetrahedrite", "metal":  "copper"},
+  {"namespace": "tfc", "name":  "pumice", "block_loc": "groundcover/pumice"},
+  {"namespace": "dfc", "name":  "bauxite", "block_loc": "ore/small_bauxite", "metal":  "alumina"},
+  {"namespace": "dfc", "name":  "galena", "block_loc": "ore/small_galena", "metal":  "lead"},
+  {"namespace": "dfc", "name":  "native_aluminum", "block_loc": "ore/small_native_aluminum", "metal":  "aluminum"},
+  {"namespace": "dfc", "name":  "native_platinum", "block_loc": "ore/small_native_platinum", "metal":  "platinum"},
+  {"namespace": "tfc_ie_addon", "name":  "galena", "block_loc": "ore/small_galena", "metal":  "lead"},
+  {"namespace": "tfc_ie_addon", "name":  "bauxite", "block_loc": "ore/small_bauxite", "metal":  "aluminum"},
+  {"namespace": "tfc_ie_addon", "name":  "uraninite", "block_loc": "ore/small_uraninite", "metal":  "uranium"},
+  {"namespace": "firmalife", "name":  "chromite", "block_loc": "ore/small_chromite", "metal":  "chromium"}
+]

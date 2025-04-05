@@ -82,6 +82,8 @@ dependencies {
 
     // For local running only. Comment out before committing
     // implementation fg.deobf("_:Embeddium:0.3.17+mc${minecraft_version}-all")
+    // implementation fg.deobf("_:dfc:0.8.0")
+    // implementation fg.deobf("_:fusion:1.2.5-forge-mc${minecraft_version}")
 }
 
 // Example for how to get properties into the manifest for reading by the runtime..
