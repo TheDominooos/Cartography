@@ -115,14 +115,16 @@ public class TFCContent {
     public static class Profile {
         public final Type type;
         public final String name;
+        public final String namespace;
 
         public static Profile lookup(Type type, String name) {
             return LOOKUPS.computeIfAbsent(type, t -> new HashMap<>()).get(name);
         }
 
-        private Profile(Type type, String name) {
+        private Profile(Type type, String name, String namespace) {
             this.type = type;
             this.name = name;
+            this.namespace = namespace;
             LOOKUPS.computeIfAbsent(type, t -> new HashMap<>()).put(name, this);
         }
 
@@ -269,7 +271,10 @@ public class TFCContent {
         Cartography.LOGGER.info("Done");
     }
 
-    private static void put(Type type, Block block, String name) {
-        TYPES.put(block, new Profile(type, name));
+    private static void put(Type type, Block block, String name, String namespace) {
+        TYPES.put(block, new Profile(type, name, namespace));
+    }
+    private static void put(Type type, Block block, String name){
+        put(type, block, name, "tfc");
     }
 }
