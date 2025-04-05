@@ -1,13 +1,23 @@
 package lordfokas.cartography.feature;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.*;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.resources.Resource;
+import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 import lordfokas.cartography.Cartography;
@@ -174,6 +184,117 @@ public class TFCContent {
         public final Classification classification;
 
         Type(Classification classification) {this.classification = classification;}
+    }
+
+    public static JsonArray loadJson(ResourceManager resourceManager, ResourceLocation resourceLocation){
+        try {
+            // Get the resource
+            Resource resource = resourceManager.getResourceOrThrow(resourceLocation);
+
+            // Read the JSON content
+            try (InputStream inputStream = resource.open();
+                 InputStreamReader reader = new InputStreamReader(inputStream);
+                 BufferedReader bufferedReader = new BufferedReader(reader)) {
+                return JsonParser.parseReader(bufferedReader).getAsJsonArray();
+            }
+        } catch (IOException e) {
+            // Handle the exception
+            e.printStackTrace();
+            return null;
+        }
+    }
+    public static void putRocks(JsonArray array){
+        for (int i = 0; i < array.size(); i++) {
+            JsonObject entry = array.get(i).getAsJsonObject();
+            String name = entry.get("name").getAsString();
+            String namespace = entry.get("namespace").getAsString();
+            ResourceLocation blockId = new ResourceLocation(namespace, "rock/raw/" + name);
+            Block block = ForgeRegistries.BLOCKS.getValue(blockId);
+            put(Type.STONE, block, name, namespace);
+            blockId = new ResourceLocation(namespace, "rock/gravel/" + name);
+            block = ForgeRegistries.BLOCKS.getValue(blockId);
+            put(Type.GRAVEL, block, name, namespace);
+            if (entry.has("is_fluxstone")) {
+                ROCK_TAGS.put(name, Set.of("rock", name, "flux", entry.get("rock_category").getAsString()));
+            } else { // if there is no fluxstone property assume the rock is not a fluxstone by default
+                ROCK_TAGS.put(name, Set.of("rock", name, entry.get("rock_category").getAsString()));
+            }
+        }
+    }
+    public static void putSoil(JsonArray array){
+        for (int i = 0; i < array.size(); i++) {
+            JsonObject entry = array.get(i).getAsJsonObject();
+            String name = entry.get("name").getAsString();
+            String namespace = entry.get("namespace").getAsString();
+            String type = entry.get("type").getAsString();
+            ResourceLocation blockId;
+            Block block;
+            switch(type){
+                case "PEAT":
+                    blockId = new ResourceLocation(namespace, "peat");
+                    block = ForgeRegistries.BLOCKS.getValue(blockId);
+                    put(Type.PEAT, block, name, namespace);
+                    break;
+                case "DIRT":
+                    blockId = new ResourceLocation(namespace, "dirt/" + name);
+                    block = ForgeRegistries.BLOCKS.getValue(blockId);
+                    put(Type.DIRT, block, name, namespace);
+
+                    blockId = new ResourceLocation(namespace, "grass/" + name);
+                    block = ForgeRegistries.BLOCKS.getValue(blockId);
+                    put(Type.DIRT, block, name, namespace);
+
+                    blockId = new ResourceLocation(namespace, "grass_path/" + name);
+                    block = ForgeRegistries.BLOCKS.getValue(blockId);
+                    put(Type.DIRT, block, name, namespace);
+
+                    blockId = new ResourceLocation(namespace, "farmland/" + name);
+                    block = ForgeRegistries.BLOCKS.getValue(blockId);
+                    put(Type.DIRT, block, name, namespace);
+
+                    blockId = new ResourceLocation(namespace, "mud/" + name);
+                    block = ForgeRegistries.BLOCKS.getValue(blockId);
+                    put(Type.MUD, block, name, namespace);
+
+                    blockId = new ResourceLocation(namespace, "muddy_roots/" + name);
+                    block = ForgeRegistries.BLOCKS.getValue(blockId);
+                    put(Type.MUD, block, name, namespace);
+
+                    blockId = new ResourceLocation(namespace, "rooted_dirt/" + name);
+                    block = ForgeRegistries.BLOCKS.getValue(blockId);
+                    put(Type.ROOTED_DIRT, block, name, namespace);
+
+                    blockId = new ResourceLocation(namespace, "clay/" + name);
+                    block = ForgeRegistries.BLOCKS.getValue(blockId);
+                    put(Type.CLAY, block, name, namespace);
+
+                    blockId = new ResourceLocation(namespace, "clay_grass/" + name);
+                    block = ForgeRegistries.BLOCKS.getValue(blockId);
+                    put(Type.CLAY, block, name, namespace);
+                    break;
+                case "SAND":
+                    blockId = new ResourceLocation(namespace, "sand/" + name);
+                    block = ForgeRegistries.BLOCKS.getValue(blockId);
+                    put(Type.SAND, block, name, namespace);
+                    break;
+            }
+        }
+    }
+    public static void putOres(JsonArray array){
+        for (int i = 0; i < array.size(); i++) {
+            JsonObject entry = array.get(i).getAsJsonObject();
+            String name = entry.get("name").getAsString();
+            String namespace = entry.get("namespace").getAsString();
+            String block_loc = entry.get("block_loc").getAsString();
+
+            ResourceLocation blockId = new ResourceLocation(namespace, block_loc);
+            Block block = ForgeRegistries.BLOCKS.getValue(blockId);
+            put(Type.NUGGET, block, name);
+            if(entry.has("metal")) {
+                String metal = entry.get("metal").getAsString();
+                ORE_TAGS.put(name, Set.of("ore", name, metal));
+            };
+        }
     }
 
     static {
