@@ -9,6 +9,7 @@ import java.util.*;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -299,49 +300,17 @@ public class TFCContent {
 
     static {
         Cartography.LOGGER.info("Initializing TFCBlockTypes");
-
+        ResourceManager resourceManager = Minecraft.getInstance().getResourceManager();
         // ROCKS  ======================================================================================================
-        for(Rock rock : Rock.values()) {
-            String name = rock.name().toLowerCase(Locale.ROOT);
-            for(Rock.BlockType type : STONE_TYPES) {
-                put(Type.STONE, TFCBlocks.ROCK_BLOCKS.get(rock).get(type).get(), name);
-            }
-            put(Type.GRAVEL, TFCBlocks.ROCK_BLOCKS.get(rock).get(Rock.BlockType.GRAVEL).get(), name);
-            for(RegistryObject<Block> obj : TFCBlocks.ORES.get(rock).values()) {
-                put(Type.ORE, obj.get(), name);
-            }
-            for(Map<Ore.Grade, RegistryObject<Block>> ores : TFCBlocks.GRADED_ORES.get(rock).values()) {
-                for(RegistryObject<Block> obj : ores.values()) {
-                    put(Type.ORE, obj.get(), name);
-                }
-            }
-            Block loose = TFCBlocks.ROCK_BLOCKS.get(rock).get(Rock.BlockType.LOOSE).get();
-            if(new ItemStack(loose).is(TFCTags.Items.FLUX)){
-                ROCK_TAGS.put(name, Set.of("rock", name, "flux", rock.category().name().toLowerCase(Locale.ROOT)));
-            }else{
-                ROCK_TAGS.put(name, Set.of("rock", name, rock.category().name().toLowerCase(Locale.ROOT)));
-            }
-        }
+        ResourceLocation rocksLocation = new ResourceLocation("cartography", "block_types/raw_rock.json");
+        JsonArray rocksArray = loadJson(resourceManager, rocksLocation);
+        putRocks(rocksArray);
+        // TODO: rock ores
 
         // SOILS  ======================================================================================================
-        for(SoilBlockType.Variant var : SoilBlockType.Variant.values()) {
-            String name = var.name().toLowerCase(Locale.ROOT);
-            for(SoilBlockType type : SoilBlockType.values()) {
-                Block block = TFCBlocks.SOIL.get(type).get(var).get();
-                if(type == SoilBlockType.CLAY || type == SoilBlockType.CLAY_GRASS) {
-                    put(Type.CLAY, block, name);
-                }
-                else {
-                    put(Type.DIRT, block, name);
-                }
-            }
-        }
-        put(Type.DIRT, TFCBlocks.PEAT.get(), "peat");
-        put(Type.DIRT, TFCBlocks.PEAT_GRASS.get(), "peat");
-        for(SandBlockType sand : SandBlockType.values()) {
-            String name = sand.name().toLowerCase(Locale.ROOT);
-            put(Type.SAND, TFCBlocks.SAND.get(sand).get(), name);
-        }
+        ResourceLocation soilLocation = new ResourceLocation("cartography", "block_types/soil.json");
+        JsonArray soilArray = loadJson(resourceManager, soilLocation);
+        putSoil(soilArray);
 
         // WOODS  ======================================================================================================
         for(Wood wood : Wood.values()) {
@@ -360,23 +329,9 @@ public class TFCContent {
         put(Type.WATER, Blocks.WATER, "fresh_water");
 
         // NUGGETS  ====================================================================================================
-        for(Ore ore : Ore.values()) {
-            if(!ore.isGraded()) continue;
-            String name = ore.name().toLowerCase(Locale.ROOT);
-            put(Type.NUGGET, TFCBlocks.SMALL_ORES.get(ore).get(), name);
-
-            Item item = TFCItems.GRADED_ORES.get(ore).get(Ore.Grade.NORMAL).get();
-            HeatingRecipe recipe = HeatingRecipe.getRecipe(new ItemStack(item));
-            if(recipe == null) {
-                ORE_TAGS.put(name, Set.of("ore", name));
-                continue;
-            }
-
-            FluidStack fluid = recipe.getDisplayOutputFluid();
-            String[] parts = fluid.getTranslationKey().split("\\.");
-            String metal = parts[parts.length - 1].replace("cast_", "");
-            ORE_TAGS.put(name, Set.of("ore", name, metal));
-        }
+        ResourceLocation oresLocation = new ResourceLocation("cartography", "block_types/ores.json");
+        JsonArray oresArray = loadJson(resourceManager, oresLocation);
+        putOres(oresArray);
 
         // FRUITS  =====================================================================================================
         for(FruitBlocks.Tree tree : FruitBlocks.Tree.values()){
